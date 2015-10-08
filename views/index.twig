@@ -1,0 +1,111 @@
+{% extends "layout.twig" %}
+
+{% set title = "MaxG Payment Gateway Test Application" %}
+{% block content %}
+    <h2>Purchase Order Form:</h2>
+    
+    {% if errors|length > 0 %}
+        
+        <div class="alert alert-danger" role="alert"> {{ errors|join('<br/>')|raw }} </div>
+        
+    {% endif %}
+    
+    {% if success %}
+        
+        <div class="alert alert-success" role="alert"> Payment was successfully processed! </div>
+        
+    {% endif %}
+
+    <form method="post" class="form-horizontal" id="paygate_form">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Order Info</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_price">Price</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" name="order_price" id="order_price" value="{{ app.request.get('order_price') }}" data-valid-rules="Price-min+0" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_currency">Currency</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" type="text" name="order_currency" id="order_currency" data-valid-rules="Currency-required">
+                            <option value=""> - Select - </option>
+                            {% for key in config.currencies %}
+                                <option value="{{key}}" {% if app.request.get('order_currency') == key %}  selected {% endif %}>{{key}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_customer_fname">Customer Full Name</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" name="order_customer_fname" id="order_customer_fname" value="{{ app.request.get('order_customer_fname') }}" data-valid-rules="Customer Full Name-required" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Billing Info</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_cc_fname">Credit Card Holder First Name</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" name="order_cc_fname" id="order_cc_fname" value="{{ app.request.get('order_cc_fname') }}" data-valid-rules="Credit Card Holder First Name-required" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_cc_lname">Credit Card Holder Last Name</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" name="order_cc_lname" id="order_cc_lname" value="{{ app.request.get('order_cc_lname') }}" data-valid-rules="Credit Card Holder Last Name-required" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_cc_number">Credit Card Number</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" name="order_cc_number" id="order_cc_number" value="{{ app.request.get('order_cc_number') }}" data-valid-rules="Credit Card Number-numeric" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Credit Card Expiration</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-6">Month:   <select class="form-control" type="text" name="order_cc_exp_m" id="order_cc_exp_m" data-valid-rules="Expiration Month-required">
+                                    <option value=""> - Select - </option>
+                                    {% for key in 1..12 %}
+                                        {% set month = "%02d"|format(key) %}
+                                        <option value="{{month}}" {% if app.request.get('order_cc_exp_m') == month %}  selected {% endif %}>{{month}}</option>
+                                    {% endfor %}
+                                </select></div>  
+                            <div class="col-sm-6">Year: <select class="form-control" type="text" name="order_cc_exp_y" id="order_cc_exp_y" data-valid-rules="Expiration Year-required">
+                                    <option value=""> - Select - </option>
+                                    {% set curYear = 'now'|date("Y") %}
+                                    {% for key in curYear..curYear+10 %}
+                                        <option value="{{key}}" {% if app.request.get('order_cc_exp_y') == key %}  selected {% endif %}>{{key}}</option>
+                                    {% endfor %}
+                                </select></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="order_cc_number">Credit Card CVV</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" name="order_cc_cvv" id="order_cc_cvv" value="{{ app.request.get('order_cc_cvv') }}" data-valid-rules="CVV-numeric" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-11 col-sm-1">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+{% block documentReady %}    
+    $('#paygate_form').validate();
+{% endblock documentReady %}

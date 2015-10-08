@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ title }}</title>
+        <script src="{{ baseurl }}/assets/jquery.min.js"></script>
+        <script src="{{ baseurl }}/assets/form.js"></script>
+        <link href="{{ baseurl }}/assets/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <h1>{{ title }}</h1>
+
+            {% for message in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        $(document).ready(function () {
+            {% block documentReady %}{% endblock documentReady %}
+        });
+    </script>
+</body>
+</html>

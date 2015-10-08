@@ -1,0 +1,26 @@
+{
+    "APP_CONFIG":
+            {
+                "currencies": ["USD", "EUR", "THB", "HKD", "SGD", "AUD"],
+                "payment_methods": {
+                    "Braintree": {
+                        "publicKey": "n2vxdggv8gmf3q2f",
+                        "privateKey": "6ad963009fe94eafc59e960b19d0d239",
+                        "merchantId": "r9wyxk36mgdcsw4s",
+                        "testMode": true
+                    },
+                    "PayPal_Rest": {
+                        "clientId": "AZReb-6uaaDwzXkG8Th1FWZmXPiIiB41Ete1aTVZCkMPiZdtIxkpvYYi_R8_Q-OLeVPt6rVqQO8Z94vo",
+                        "secret": "EIrhvNFryxAdItD_N55DRZiwe3XZlQpZpaGZb_ACpNQXx6KHKzc1yWmh4_guDQJkq6pZHhWg6oLVOO_-",
+                        "testMode": true
+                    }
+                },
+                "DB":{
+                    "host":"localhost",
+                    "dbname":"dbtest",
+                    "user":"root",
+                    "password":""
+                }
+            }
+
+}
